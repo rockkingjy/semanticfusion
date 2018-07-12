@@ -6,7 +6,6 @@ endif()
 project(SemanticFusion)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}")
-set(CAFFE_PATH /media/elab/sdd/mycodes/caffe)
 
 find_package(CUDA REQUIRED)
 find_package(Glog REQUIRED)
@@ -27,6 +26,7 @@ APPEND_TARGET_ARCH_FLAGS()
 set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} "--ftz=true;--prec-div=false;--prec-sqrt=false") 
 set(CUDA_HOST_COMPILER gcc-5)
 
+set(CAFFE_PATH /media/elab/sdd/mycodes/caffe)
 set(CMAKE_CXX_FLAGS "-O3 -msse2 -msse3 -Wall -std=c++11 -I${CAFFE_PATH}/build/include/ -I${CAFFE_PATH}/include/ ")
 
 cuda_add_library(semantic_fusion_cuda_library SHARED ${cuda} )

@@ -1,18 +1,24 @@
 # README #
+Original version is: https://github.com/seaun163/semanticfusion
+
 Quick note for me only:
 ```
 cd build
+cmake ..
+make -j12
 ./SemanticFusion ../nyu_data_small/bathroom_0003.txt ../nyu_data_small/output_predictions.txt
 ```
 
+## Some tips for install:
+* Pretrained Model and data [[link](https://drive.google.com/drive/folders/1n_p_DtsvUsPjtSnL67dtHZIAW2uUDvHv?usp=sharing)].
 
-Pretrained Model and data [[link](https://drive.google.com/drive/folders/1n_p_DtsvUsPjtSnL67dtHZIAW2uUDvHv?usp=sharing)].
+* Install of [[Pangolin](https://github.com/stevenlovegrove/Pangolin)]: don't forget to do `sudo make install`.
 
-Install of [[Pangolin](https://github.com/stevenlovegrove/Pangolin)]: don't forget to do `sudo make install`.
-
-Install of [[SuiteSparse](https://drive.google.com/file/d/1zT3wGWCEYmqmDb-0lkZ6p9kEE8Zgso0B/view?usp=sharing)]: don't forget to `sudo cp -R include /usr/local/include/suitesparse` and `sudo cp -R lib/* /usr/local/lib`, because it will not copy automatically. 
+* Install of [[SuiteSparse](https://drive.google.com/file/d/1zT3wGWCEYmqmDb-0lkZ6p9kEE8Zgso0B/view?usp=sharing)]: don't forget to `sudo cp -R include /usr/local/include/suitesparse` and `sudo cp -R lib/* /usr/local/lib`, because it will not copy automatically. 
 
 ## Changes in Caffe:
+Caffe modified version [[Link](https://github.com/rockkingjy/caffe)].
+
 * In `caffe.proto`, add:
 ```
   optional BNParameter bn_param = 200;
@@ -40,6 +46,7 @@ Install of [[SuiteSparse](https://drive.google.com/file/d/1zT3wGWCEYmqmDb-0lkZ6p
 
 `caffe/include/caffe/layers/unpooling_layer.hpp`
 
+============================================================================
 ### Related publications ###
 Please cite this work if you make use of our system in any of your own endeavors:
 
