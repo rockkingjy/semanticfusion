@@ -28,6 +28,7 @@
 #include <utilities/LiveLogReader.h>
 #include <utilities/RawLogReader.h>
 #include <utilities/PNGLogReader.h>
+#include <utilities/RealsenseLogReader.h>
 #include <utilities/Types.h>
 
 #include <gui/Gui.h>
@@ -65,14 +66,12 @@ int main(int argc, char *argv[])
   CaffeInterface caffe;
   // This is for the RGB-D network
   caffe.Init("/media/elab/sdd/mycodes/caffe/models/semanticfusion/nyu_rgbd/inference.prototxt","/media/elab/sdd/mycodes/caffe/models/semanticfusion/nyu_rgbd/inference.caffemodel");
-  // This is for the RGB network
-  //caffe.Init("../caffe/models/nyu_rgb/inference.prototxt","../caffe/models/nyu_rgb/inference.caffemodel");
   const int num_classes = caffe.num_output_classes();
   std::cout<<"Network produces "<<num_classes<<" output classes"<<std::endl;
+  std::cout << "Caffe Initialized===============================" << std::endl;
   // Check the class colour output and the number of classes matches
   std::vector<ClassColour> class_colour_lookup = load_colour_scheme("../class_colour_scheme.data",num_classes);
   std::unique_ptr<SemanticFusionInterface> semantic_fusion(new SemanticFusionInterface(num_classes,100));
-  std::cout << "Caffe===================================" << std::endl;
   // Initialise the Gui, Map, and Kinect Log Reader
   const int width = 640;
   const int height = 480;
@@ -83,7 +82,7 @@ int main(int argc, char *argv[])
   if (argc > 2) {
     log_reader.reset(new PNGLogReader(argv[1],argv[2]));
   } else {
-    log_reader.reset(new LiveLogReader("./live",false));
+    log_reader.reset(new RealsenseLogReader("./live",false));
     if (!log_reader->is_valid()) {
       std::cout<<"Error initialising live device..."<<std::endl;
       return 1;

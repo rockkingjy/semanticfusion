@@ -8,6 +8,10 @@ cmake ..
 make -j12
 ./SemanticFusion ../nyu_data_small/bathroom_0003.txt ../nyu_data_small/output_predictions.txt
 ```
+or
+```
+./SemanticFusion
+```
 
 ## Some tips for install:
 * Pretrained Model and data [[link](https://drive.google.com/drive/folders/1n_p_DtsvUsPjtSnL67dtHZIAW2uUDvHv?usp=sharing)].
@@ -47,6 +51,7 @@ Caffe modified version [[Link](https://github.com/rockkingjy/caffe)].
 `caffe/include/caffe/layers/unpooling_layer.hpp`
 
 ============================================================================
+
 ### Related publications ###
 Please cite this work if you make use of our system in any of your own endeavors:
 

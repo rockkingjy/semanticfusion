@@ -10,8 +10,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}")
 find_package(CUDA REQUIRED)
 find_package(Glog REQUIRED)
 find_package(OpenCV REQUIRED)
-find_package(OpenNI2 REQUIRED)
 find_package(Caffe REQUIRED)
+find_package(OpenNI2 REQUIRED)
+find_package(realsense2 REQUIRED)
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/elasticfusionpublic/Core/src")
 #add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/caffe_semanticfusion")
@@ -43,6 +44,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
                       semantic_fusion_cuda_library
                       efusion
                       caffe
+                      realsense2::realsense2
 )
 
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
