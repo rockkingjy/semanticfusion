@@ -15,7 +15,7 @@
  * please email researchcontracts.engineering@imperial.ac.uk.
  *
  */
-
+ 
 #ifndef GUI_H_
 #define GUI_H_
 #include <iostream>

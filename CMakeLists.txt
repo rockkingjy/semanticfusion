@@ -28,7 +28,8 @@ set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} "--ftz=true;--prec-div=false;--prec-sqrt=
 set(CUDA_HOST_COMPILER gcc-5)
 
 set(CAFFE_PATH /media/elab/sdd/mycodes/caffe)
-set(CMAKE_CXX_FLAGS "-O3 -msse2 -msse3 -Wall -std=c++11 -I${CAFFE_PATH}/build/include/ -I${CAFFE_PATH}/include/ ")
+#set(ELASTICFUSION_PATH /media/elab/sdd/mycodes/ElasticFusion/Core/src)#/media/elab/sdd/mycodes/semanticfusion/elasticfusionpublic/Core/src)
+set(CMAKE_CXX_FLAGS "-O3 -msse2 -msse3 -Wall -std=c++11 -I${CAFFE_PATH}/build/include/ -I${CAFFE_PATH}/include/")# -I${ELASTICFUSION_PATH} -I/usr/local/include/eigen3/")
 
 cuda_add_library(semantic_fusion_cuda_library SHARED ${cuda} )
 
@@ -42,6 +43,10 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
                       ${OpenCV_LIBS}
                       ${OPENNI2_LIBRARY}
                       semantic_fusion_cuda_library
+                      GL
+                      GLEW
+                      jpeg
+                      pangolin
                       efusion
                       caffe
                       realsense2::realsense2

@@ -1,14 +1,17 @@
-# README #
-Original version is: https://github.com/seaun163/semanticfusion
+# What is this?
+This is a [[Intel® RealSense™](https://github.com/IntelRealSense/librealsense)] version of Semantic Fusion, the original version is: https://github.com/seaun163/semanticfusion.
 
-Quick note for me only:
+## You have to install [[librealsense](https://github.com/rockkingjy/librealsense)], [[Caffe](https://github.com/rockkingjy/caffe)], and [[ElasticFusion](https://github.com/rockkingjy/ElasticFusion)].
+
+## Quick Run:
+To run on NYU dataset:
 ```
 cd build
 cmake ..
 make -j12
 ./SemanticFusion ../nyu_data_small/bathroom_0003.txt ../nyu_data_small/output_predictions.txt
 ```
-or
+or to run with RealSense camera.
 ```
 ./SemanticFusion
 ```
@@ -20,7 +23,14 @@ or
 
 * Install of [[SuiteSparse](https://drive.google.com/file/d/1zT3wGWCEYmqmDb-0lkZ6p9kEE8Zgso0B/view?usp=sharing)]: don't forget to `sudo cp -R include /usr/local/include/suitesparse` and `sudo cp -R lib/* /usr/local/lib`, because it will not copy automatically. 
 
-## Changes in Caffe:
+* Change the PATH of your Caffe and ElasticFusion in `CMakeList.txt`:
+```
+add_subdirectory("/media/elab/sdd/mycodes/ElasticFusion/Core/src")
+set(CAFFE_PATH /media/elab/sdd/mycodes/caffe)
+```
+
+
+## Changes from BVLC Caffe:
 Caffe modified version [[Link](https://github.com/rockkingjy/caffe)].
 
 * In `caffe.proto`, add:
@@ -38,6 +48,7 @@ Caffe modified version [[Link](https://github.com/rockkingjy/caffe)].
 }
 ```
 * Add files: 
+
 `caffe/src/caffe/layers/bn_layer.cpp` 
 
 `caffe/src/caffe/layers/bn_layer.cu` 
@@ -50,7 +61,75 @@ Caffe modified version [[Link](https://github.com/rockkingjy/caffe)].
 
 `caffe/include/caffe/layers/unpooling_layer.hpp`
 
-============================================================================
+## Changes from Original [[ElasticFusion](https://github.com/mp3guy/ElasticFusion)]
+
+* In `Core/src/ElasticFusion.h` add:
+```
+EFUSION_API void setTrackingOnly(const bool & val);
+...
+
+        bool trackingOnly;
+```
+
+* In `Core/src/IndexMap.h` add:
+```
+        EFUSION_API void renderSurfelIds(const Eigen::Matrix4f & pose,
+                                         const int & time,
+                                         const std::pair<GLuint, GLuint> & model,
+                                         const float threshold,
+                                         const float depthCutoff,
+                                         const int timeDelta);
+...
+        GPUTexture * surfelIdTex()
+        {
+            return &surfelIdTexture;
+        }
+...
+        std::shared_ptr<Shader> surfelIdProgram;
+        pangolin::GlFramebuffer surfelIdFrameBuffer;
+        pangolin::GlRenderBuffer surfelIdRenderBuffer;
+        GPUTexture surfelIdTexture;                                     
+```
+
+* In `Core/src/GlobalModel.h` add:
+```
+
+                              const bool drawClasses,
+...                          
+        EFUSION_API unsigned int deletedCount();
+
+        EFUSION_API float* getMapSurfelsGpu();
+
+        EFUSION_API int* getDeletedSurfelsGpu();
+
+        EFUSION_API void updateSurfelClass(const int surfelId, const float color);
+...
+        // For SemanticFusion
+        std::pair<GLuint, GLuint> deleted_surfel_buffer;
+        int* cuda_deleted_surfel_ptr;
+        cudaGraphicsResource * deletedSurfelCudaRes;
+        std::vector<int> deleted_surfels;
+        GLuint deleteQuery;
+        unsigned int deleted_count;
+        float* cuda_map_ptr;
+        cudaGraphicsResource * mapCudaRes;
+```
+
+* In `Core/src/GPUTexture.h` add:
+```
+        cudaArray * cudaArr;
+        cudaTextureObject_t texObj;
+```
+
+* Add files:
+
+`Core/src/Shaders/surfel_ids.frag`
+
+`Core/src/Shaders/surfel_ids.geom` 
+
+`Core/src/Shaders/surfel_ids.vert` 
+
+--------------------------------
 
 ### Related publications ###
 Please cite this work if you make use of our system in any of your own endeavors:
